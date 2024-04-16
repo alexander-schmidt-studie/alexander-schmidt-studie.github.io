@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+        * {
+            margin: 0;
+        }
+
+        body {
+            font-family: system-ui, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            color: #212529;
+            background-color: #eee;
+            padding: 1rem;
+        }
+
+        img, picture, video, canvas, svg {
+            display: block;
+            max-width: 100%;
+        }
+
+        button {
+            font: inherit;
+            font-weight: 600;
+            color: #133b89;
+            background-color: transparent;
+            border: 2px solid #133b89;
+            padding: 0.5rem 1.5rem;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        button:hover, button:active {
+            background-color: #133b89;
+            color: #fff;
+        }
+
+        p, h1, h2, h3, h4, h5, h6 {
+            overflow-wrap: break-word;
+            hyphens: auto;
+            margin-bottom: 1.2rem;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen--noscript {
+            display: block;
+        }
+
+        #wrapper {
+            margin: 0 auto;
+            padding: 1rem;
+            max-width: 500px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            color: #133b89;
+        }
+
+        #id-display {
+            letter-spacing: .5rem;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+<div id="wrapper">
+    <h1>Effektivität achtsamkeitsbasierter Übungen</h1>
+
+    <noscript>
+        <div class="screen screen--noscript">
+            <p>Bitte aktiviere JavaScript in deinem Browser, um deine ID für die Studienteilnahme zu generieren.</p>
+        </div>
+    </noscript>
+    <div id="start-screen" class="screen">
+        <p>Klicke auf den Button, um deine ID für die Studienteilnahme zu generieren. Die ID kann dir nicht persönlich zugeordnet werden.</p>
+        <p><button id="generate-id-button">ID generieren</button></p>
+    </div>
+    <div id="id-screen" class="screen">
+        <p>Deine ID für die Studienteilnahme lautet:</p>
+        <p id="id-display"></p>
+        <p>Bitte notiere dir deine ID. Die ID kann dir nicht persönlich zugeordnet oder wiederhergestellt werden.</p>
+    </div>
+</div>
+
+<script>
+    const ID_LENGTH = 6;
+
+    const ID_KEY = "id";
+
+    const startScreen = document.getElementById("start-screen");
+    const generateIdButton = document.getElementById("generate-id-button");
+
+    const idScreen = document.getElementById("id-screen");
+    const idDisplay = document.getElementById("id-display");
+
+    function showStartScreen() {
+        idScreen.style.display = "none";
+        startScreen.style.display = "block";
+    }
+
+    function showIdScreen() {
+        startScreen.style.display = "none";
+        idScreen.style.display = "block";
+        idDisplay.innerText = localStorage.getItem(ID_KEY);
+    }
+
+    function generateId() {
+        const max = Math.pow(10, ID_LENGTH);
+        const number = Math.floor(Math.random() * (max - 1) + 1);
+        const id = (number + "").padStart(ID_LENGTH, "0");
+        localStorage.setItem(ID_KEY, id);
+        showIdScreen();
+    }
+    generateIdButton.addEventListener("click", generateId);
+
+    const id = localStorage.getItem(ID_KEY);
+    if (id) {
+        showIdScreen();
+    } else {
+        showStartScreen();
+    }
+</script>
+</body>
+</html>
